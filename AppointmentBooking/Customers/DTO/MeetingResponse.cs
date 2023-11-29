@@ -1,4 +1,6 @@
-﻿namespace AppointmentBooking.Customers.DTO
+﻿using AppointmentBooking.Context.Models;
+
+namespace AppointmentBooking.Customers.DTO
 {
     public class MeetingResponse
     {
@@ -13,5 +15,7 @@
         public string? CustomerEmailAddress { get; set; }
 
         public string? CompanyEmailAddress { get; set; }
+
+        public List<string>? Customers { get; set; }
     }
 }

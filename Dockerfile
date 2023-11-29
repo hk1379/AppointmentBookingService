@@ -17,7 +17,7 @@ WORKDIR "/src/AppointmentBooking"
 RUN dotnet build "AppointmentBooking.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "AppointmentBooking.csproj" -c Release -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "AppointmentBooking.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app

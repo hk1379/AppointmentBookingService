@@ -2,6 +2,7 @@
 {
     using AppointmentBooking.Context;
     using AppointmentBooking.Context.Models;
+    using AppointmentBooking.Customers;
     using AppointmentBooking.Customers.DTO;
     using Microsoft.EntityFrameworkCore;
     using static AppointmentBooking.Meetings.IMeetingService;
@@ -10,11 +11,13 @@
     {
         private readonly ILogger<MeetingService> _logger;
         private readonly AppointmentBookingDbContext _context;
+        private readonly ICustomerService _customerService;
 
-        public MeetingService(ILogger<MeetingService> logger, AppointmentBookingDbContext context)
+        public MeetingService(ILogger<MeetingService> logger, AppointmentBookingDbContext context, ICustomerService customerService)
         {
             _logger = logger;
             _context = context;
+            _customerService = customerService;
         }
 
         private async Task<Meeting?> GetMeetingAsync(int Id) =>
@@ -23,6 +26,14 @@
         public async Task<MeetingResponse?> MeetingInfoToDisplayAsync(int Id)
         {
             Meeting? meeting = await this.GetMeetingAsync(Id);
+
+            //List<string> customers = new();
+
+            //foreach (Customer customer in meeting.Customers) 
+            //{
+            //    string customerString = customer.ToString();
+            //    customers.Add(customerString);
+            //}
 
             if (meeting != null)
             {
@@ -34,6 +45,7 @@
                     CompanyPhoneNumber = meeting.CompanyPhoneNumber,
                     CustomerEmailAddress = meeting.CustomerEmailAddress,
                     CompanyEmailAddress = meeting.CompanyEmailAddress,
+                    // Customers = customers,
                 };
             }
 
@@ -56,6 +68,7 @@
                     CompanyPhoneNumber = request.CompanyPhoneNumber,
                     CustomerEmailAddress = request.CustomerEmailAddress,
                     CompanyEmailAddress = request.CompanyEmailAddress,
+                    // CustomerId = request.CustomerId,
                 };
 
                 _context.Meetings.Add(meeting);
@@ -76,6 +89,12 @@
         {
             Meeting? meeting = await this.GetMeetingAsync(request.Id);
 
+            Customer? customer = await _customerService.GetCustomerAsync(request.CustomerId).ConfigureAwait(false);
+
+            List<Customer>? customers = new () { customer };
+
+            // List<Meeting>? meetings = new () { meeting };
+
             if (meeting != null)
             {
                 meeting.MeetingName = request.MeetingName;
@@ -83,8 +102,13 @@
                 meeting.CompanyPhoneNumber = request.CompanyPhoneNumber;
                 meeting.CustomerEmailAddress = request.CustomerEmailAddress;
                 meeting.CompanyEmailAddress = request.CompanyEmailAddress;
+                // meeting.CustomerId = request.CustomerId;
+                // check line 151 of LinkDefinitionService
+                // meeting?.Customers?.Clear();
+                // meeting.Customers = await this._context.Customers.Where(c => c.Id == request.Id).ToListAsync();
+                meeting.Customers = customers;
 
-                _context.Update(meeting);
+                _context.Meetings.Update(meeting);
             };
 
             int entriesSaved = await _context.SaveChangesAsync().ConfigureAwait(false);

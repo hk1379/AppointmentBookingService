@@ -32,6 +32,10 @@ namespace AppointmentBooking.Context.Models
         [Column("AttendeeEmailAddress", Order = 5)]
         public string? CompanyEmailAddress { get; set; }
 
+        //[ForeignKey(nameof(CustomerId))]
+        //[Column("CustomerId", Order = 6)]
+        //public string? CustomerId { get; set; }
+
         public List<Customer>? Customers { get; set; }
     }
 }

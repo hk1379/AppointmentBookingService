@@ -16,6 +16,10 @@ namespace AppointmentBooking.Context
             modelBuilder.Entity<Customer>()
                 .HasMany(c => c.Meetings)
                 .WithMany(m => m.Customers);
+                //.UsingEntity(
+                //    l => l.HasOne(typeof(Meeting)).WithMany().HasForeignKey("CustomerId"),
+                //    r => r.HasOne(typeof(Customer)).WithMany().HasForeignKey("MeetingId")
+                //);
         }
     }
 }

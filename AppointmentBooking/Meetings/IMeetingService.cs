@@ -7,7 +7,7 @@
     {
         public record CreateMeetingRequest(string MeetingName, string? CustomerPhoneNumber, string? CompanyPhoneNumber, string? CustomerEmailAddress, string? CompanyEmailAddress);
 
-        public record UpdateMeetingRequest(int Id, string MeetingName, string? CustomerPhoneNumber, string? CompanyPhoneNumber, string? CustomerEmailAddress, string? CompanyEmailAddress);
+        public record UpdateMeetingRequest(int Id, string MeetingName, string? CustomerPhoneNumber, string? CompanyPhoneNumber, string? CustomerEmailAddress, string? CompanyEmailAddress, int CustomerId);
 
         public Task<MeetingResponse?> MeetingInfoToDisplayAsync(int Id);
 

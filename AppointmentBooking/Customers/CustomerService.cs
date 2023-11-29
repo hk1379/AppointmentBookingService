@@ -17,12 +17,12 @@
             _context = context;
         }
 
-        private async Task<Customer?> GetCustomerAsync(int Id) =>
-            await _context.Customers.AsNoTracking().SingleOrDefaultAsync(c => c.Id == Id).ConfigureAwait(false);
+        public async Task<Customer?> GetCustomerAsync(int id) =>
+            await _context.Customers.AsNoTracking().SingleOrDefaultAsync(c => c.Id == id).ConfigureAwait(false);
 
-        public async Task<CustomerResponse?> CustomerInfoToDisplayAsync(int Id)
+        public async Task<CustomerResponse?> CustomerInfoToDisplayAsync(int id)
         {            
-            Customer? customer = await this.GetCustomerAsync(Id).ConfigureAwait(false);
+            Customer? customer = await this.GetCustomerAsync(id).ConfigureAwait(false);
 
             if (customer != null) 
             {
@@ -54,6 +54,7 @@
                     EmailAddress = request.EmailAddress,
                     PhoneNumber = request.PhoneNumber,
                     CompanyName = request.CompanyName,
+                    // MeetingId = request.MeetingId,
                 };
 
                 _context.Add(customer);
@@ -84,6 +85,7 @@
                 customer.PhoneNumber = request.PhoneNumber;
                 customer.EmailAddress = request.EmailAddress;
                 customer.CompanyName = request.CompanyName;
+                // customer.MeetingId = request.MeetingId;
 
                 _context.Customers.Update(customer);
             }

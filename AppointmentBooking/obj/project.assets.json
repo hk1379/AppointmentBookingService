@@ -3905,11 +3905,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\hk123\\OneDrive\\Documents\\Development\\repository\\AppointmentBooking\\AppointmentBooking\\AppointmentBooking.csproj",
+      "projectUniqueName": "C:\\Users\\hk123\\OneDrive\\Documents\\Development\\repository\\AppointmentBookingService\\AppointmentBooking\\AppointmentBooking.csproj",
       "projectName": "AppointmentBooking",
-      "projectPath": "C:\\Users\\hk123\\OneDrive\\Documents\\Development\\repository\\AppointmentBooking\\AppointmentBooking\\AppointmentBooking.csproj",
+      "projectPath": "C:\\Users\\hk123\\OneDrive\\Documents\\Development\\repository\\AppointmentBookingService\\AppointmentBooking\\AppointmentBooking.csproj",
       "packagesPath": "C:\\Users\\hk123\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\hk123\\OneDrive\\Documents\\Development\\repository\\AppointmentBooking\\AppointmentBooking\\obj\\",
+      "outputPath": "C:\\Users\\hk123\\OneDrive\\Documents\\Development\\repository\\AppointmentBookingService\\AppointmentBooking\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\hk123\\AppData\\Roaming\\NuGet\\NuGet.Config",

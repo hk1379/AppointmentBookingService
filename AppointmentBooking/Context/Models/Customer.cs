@@ -27,6 +27,10 @@ namespace AppointmentBooking.Context.Models
         [Column("CompanyName", Order = 4)]
         public string? CompanyName { get; set; }
 
-        public virtual List<Meeting>? Meetings { get; set; }
+        //[ForeignKey(nameof(MeetingId))]
+        //[Column("CustomerId", Order = 5)]
+        //public string? MeetingId { get; set; }
+
+        public List<Meeting>? Meetings { get; set; } = new ();
     }
 }
