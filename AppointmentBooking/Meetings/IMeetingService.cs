@@ -1,7 +1,6 @@
 ﻿namespace AppointmentBooking.Meetings
 {
     using AppointmentBooking.Context.Models;
-    using AppointmentBooking.Customers.DTO;
     using AppointmentBooking.Meetings.Requests;
 
     public interface IMeetingService
@@ -11,6 +10,8 @@
         // public record UpdateMeetingRequest(int Id, string MeetingName, string? CustomerPhoneNumber, string? CompanyPhoneNumber, string? CustomerEmailAddress, string? CompanyEmailAddress, int[] CustomerIds);
 
         public record CustomersToMeetingRequest(int MeetingId, int[] CustomerIds);
+
+        public record CompaniesToMeetingRequest(int MeetingId, int[] CompanyIds);
 
         Task<Meeting?> GetMeetingAsync(int Id);
 
@@ -26,7 +27,11 @@
 
         Task<bool> AddCustomersToMeeting(CustomersToMeetingRequest request);
 
+        Task<bool> AddCompaniesToMeeting(CompaniesToMeetingRequest request);
+
         Task<bool> RemoveCustomersFromMeeting(CustomersToMeetingRequest request);
+
+        Task<bool> RemoveCompaniesFromMeeting(CompaniesToMeetingRequest request);
 
         Task<bool> DeleteMeetingAsync(int Id);
     }

@@ -125,9 +125,9 @@
             {
                 if (request != null)
                 {
-                    bool meetingUpdated = await _meetingService.AddCustomersToMeeting(request).ConfigureAwait(false);
+                    bool customerAdded = await _meetingService.AddCustomersToMeeting(request).ConfigureAwait(false);
 
-                    if (meetingUpdated == true)
+                    if (customerAdded == true)
                         return this.Ok("Customers Added");
                     else
                         return this.StatusCode((int) HttpStatusCode.InternalServerError);
@@ -137,7 +137,32 @@
             }
             catch (Exception ex)
             {
-                _logger.LogError("Error whilst updating meeting: {error}", ex.Message);
+                _logger.LogError("Error whilst adding customer to meeting: {error}", ex.Message);
+                return this.StatusCode((int)HttpStatusCode.InternalServerError);
+            }
+        }
+
+        [HttpPut]
+        [Route("addCompanies")]
+        public async Task<IActionResult> AddCompaniesToMeetingAsync([FromBody] CompaniesToMeetingRequest request)
+        {
+            try
+            {
+                if (request != null)
+                {
+                    bool companyAdded = await _meetingService.AddCompaniesToMeeting(request).ConfigureAwait(false);
+
+                    if (companyAdded == true)
+                        return this.Ok("Companies Added");
+                    else
+                        return this.StatusCode((int)HttpStatusCode.InternalServerError);
+                }
+
+                return this.BadRequest();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error whilst adding company to meeting: {error}", ex.Message);
                 return this.StatusCode((int)HttpStatusCode.InternalServerError);
             }
         }
@@ -150,9 +175,9 @@
             {
                 if (request != null)
                 {
-                    bool meetingUpdated = await _meetingService.RemoveCustomersFromMeeting(request).ConfigureAwait(false);
+                    bool customersRemoved = await _meetingService.RemoveCustomersFromMeeting(request).ConfigureAwait(false);
 
-                    if (meetingUpdated == true)
+                    if (customersRemoved == true)
                         return this.Ok("Customers Removed");
                     else
                         return this.StatusCode((int)HttpStatusCode.InternalServerError);
@@ -162,7 +187,32 @@
             }
             catch (Exception ex)
             {
-                _logger.LogError("Error whilst updating meeting: {error}", ex.Message);
+                _logger.LogError("Error whilst removing customers from meeting: {error}", ex.Message);
+                return this.StatusCode((int)HttpStatusCode.InternalServerError);
+            }
+        }
+
+        [HttpPut]
+        [Route("removeCompanies")]
+        public async Task<IActionResult> RemoveCompaniesFromMeetingAsync([FromBody] CompaniesToMeetingRequest request)
+        {
+            try
+            {
+                if (request != null)
+                {
+                    bool companiesRemoved = await _meetingService.RemoveCompaniesFromMeeting(request).ConfigureAwait(false);
+
+                    if (companiesRemoved == true)
+                        return this.Ok("Companies Removed");
+                    else
+                        return this.StatusCode((int)HttpStatusCode.InternalServerError);
+                }
+
+                return this.BadRequest();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error whilst removing companies from meeting: {error}", ex.Message);
                 return this.StatusCode((int)HttpStatusCode.InternalServerError);
             }
         }
