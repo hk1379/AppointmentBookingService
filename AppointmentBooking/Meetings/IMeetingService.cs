@@ -5,19 +5,15 @@
 
     public interface IMeetingService
     {
-        public record CreateMeetingRequest(string Title, DateTime FromDateTime, int Duration, string Status, string Location, string Description, bool ReservationPaid);
+        record CreateMeetingRequest(string Title, DateTime FromDateTime, int Duration, string Status, string Location, string Description, bool ReservationPaid);
 
-        public record UpdateMeetingRequest(int Id, string Title, DateTime FromDateTime, int Duration, string Status, string Location, string Description, bool ReservationPaid);
+        record UpdateMeetingRequest(int Id, string Title, DateTime FromDateTime, int Duration, string Status, string Location, string Description, bool ReservationPaid);
 
-        public record CustomersToMeetingRequest(int MeetingId, int[] CustomerIds);
+        record CustomersToMeetingRequest(int MeetingId, int[] CustomerIds);
 
-        public record CompaniesToMeetingRequest(int MeetingId, int[] CompanyIds);
-
-        Task<Meeting?> GetMeetingAsync(int Id);
+        record CompaniesToMeetingRequest(int MeetingId, int[] CompanyIds);
 
         Task<MeetingResponse?> MeetingInfoToDisplayAsync(int Id);
-
-        Task<List<Meeting>?> GetMeetingsAsync(int[] ids);
 
         Task<List<Meeting>?> GetAllMeetingsAsync();
 

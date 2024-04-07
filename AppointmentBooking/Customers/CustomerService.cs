@@ -19,10 +19,10 @@
             _context = context;
         }
 
-        public async Task<Customer?> GetCustomerAsync(int id) =>
+        private async Task<Customer?> GetCustomerAsync(int id) =>
             await _context.Customers.AsNoTracking().SingleOrDefaultAsync(c => c.Id == id).ConfigureAwait(false);
 
-        public async Task<Customer?> GetCustomerTrackingAsync(int id) =>
+        private async Task<Customer?> GetCustomerTrackingAsync(int id) =>
             await _context.Customers.SingleOrDefaultAsync(c => c.Id == id).ConfigureAwait(false);
 
         public async Task<CustomerResponse?> CustomerInfoToDisplayAsync(int id)

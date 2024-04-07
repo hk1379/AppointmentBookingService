@@ -19,10 +19,10 @@ namespace AppointmentBooking.Companies
             _context = context;
         }
 
-        public async Task<Company?> GetCompanyAsync(int id) =>
+        private async Task<Company?> GetCompanyAsync(int id) =>
             await _context.Company.AsNoTracking().SingleOrDefaultAsync(c => c.Id == id).ConfigureAwait(false);
 
-        public async Task<Company?> GetCompanyTrackingAsync(int id) =>
+        private async Task<Company?> GetCompanyTrackingAsync(int id) =>
             await _context.Company.SingleOrDefaultAsync(c => c.Id == id).ConfigureAwait(false);
 
         public async Task<CompanyResponse?> CompanyInfoToDisplayAsync(int id)

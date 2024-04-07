@@ -28,7 +28,7 @@
             _context = context;
         }
 
-        public async Task<Meeting?> GetMeetingAsync(int Id) =>
+        private async Task<Meeting?> GetMeetingAsync(int Id) =>
             await _context.Meetings.AsNoTracking().SingleOrDefaultAsync(m => m.Id == Id).ConfigureAwait(false);
 
         private async Task<Meeting?> GetMeetingTrackingAsync(int Id) =>
@@ -55,9 +55,6 @@
 
             return null;
         }
-
-        public async Task<List<Meeting>?> GetMeetingsAsync(int[] ids) =>
-            await _context.Meetings.AsNoTracking().Where(m => ids.Contains(m.Id)).ToListAsync();
 
         public async Task<List<Meeting>?> GetAllMeetingsAsync() =>
             await _context.Meetings.AsNoTracking().ToListAsync();
