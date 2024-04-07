@@ -2,9 +2,9 @@
 {
     using System.Net;
     using AppointmentBooking.Context.Models;
-    using AppointmentBooking.Customers.DTO;
     using static AppointmentBooking.Meetings.IMeetingService;
     using Microsoft.AspNetCore.Mvc;
+    using AppointmentBooking.Meetings.Requests;
 
     [Route("api/[controller]")]
     public class MeetingController : Controller
@@ -51,16 +51,12 @@
         {
             try
             {
-                IEnumerable<Meeting?>? meetings = await _meetingService.GetMeetingsAsync().ConfigureAwait(false);
+                IEnumerable<Meeting?>? meetings = await _meetingService.GetAllMeetingsAsync().ConfigureAwait(false);
 
                 if (meetings != null)
-                {
                     return this.Ok(meetings);
-                }
                 else
-                {
                     return this.NotFound();
-                }
             }
             catch (Exception ex)
             {
@@ -86,7 +82,7 @@
                         return this.StatusCode((int) HttpStatusCode.InternalServerError);
                 }
                 
-                return this.StatusCode((int) HttpStatusCode.BadRequest);
+                return this.BadRequest();
             }
             catch (Exception ex)
             {
@@ -98,7 +94,7 @@
         // working
         [HttpPut]
         [Route("update")]
-        public async Task<IActionResult> UpdateCustomerAsync([FromBody] UpdateMeetingRequest request)
+        public async Task<IActionResult> UpdateMeetingAsync([FromBody] UpdateMeetingRequest request)
         {
             try
             {
@@ -112,12 +108,62 @@
                         return this.StatusCode((int) HttpStatusCode.InternalServerError);
                 }
 
-                return this.StatusCode((int) HttpStatusCode.BadRequest);
+                return this.BadRequest();
             }
             catch (Exception ex)
             {
-                _logger.LogError("Error whilst updating customer: {error}", ex.Message);
+                _logger.LogError("Error whilst updating meeting: {error}", ex.Message);
                 return this.StatusCode((int) HttpStatusCode.InternalServerError);
+            }
+        }
+
+        [HttpPut]
+        [Route("addCustomers")]
+        public async Task<IActionResult> AddCustomersToMeetingAsync([FromBody] CustomersToMeetingRequest request)
+        {
+            try
+            {
+                if (request != null)
+                {
+                    bool meetingUpdated = await _meetingService.AddCustomersToMeeting(request).ConfigureAwait(false);
+
+                    if (meetingUpdated == true)
+                        return this.Ok("Customers Added");
+                    else
+                        return this.StatusCode((int) HttpStatusCode.InternalServerError);
+                }
+
+                return this.BadRequest();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error whilst updating meeting: {error}", ex.Message);
+                return this.StatusCode((int)HttpStatusCode.InternalServerError);
+            }
+        }
+
+        [HttpPut]
+        [Route("removeCustomers")]
+        public async Task<IActionResult> RemoveCustomersFromMeetingAsync([FromBody] CustomersToMeetingRequest request)
+        {
+            try
+            {
+                if (request != null)
+                {
+                    bool meetingUpdated = await _meetingService.RemoveCustomersFromMeeting(request).ConfigureAwait(false);
+
+                    if (meetingUpdated == true)
+                        return this.Ok("Customers Removed");
+                    else
+                        return this.StatusCode((int)HttpStatusCode.InternalServerError);
+                }
+
+                return this.BadRequest();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error whilst updating meeting: {error}", ex.Message);
+                return this.StatusCode((int)HttpStatusCode.InternalServerError);
             }
         }
 

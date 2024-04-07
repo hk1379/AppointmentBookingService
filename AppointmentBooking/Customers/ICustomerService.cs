@@ -7,18 +7,20 @@ namespace AppointmentBooking.Customers
     {
         public record CreateCustomerRequest(string Name, string PhoneNumber, string EmailAddress, string? CompanyName);
 
-        public record UpdateCustomerRequest(int Id, string Name, string PhoneNumber, string EmailAddress, string? CompanyName);
+        public record UpdateCustomerRequest(int Id, string Name, string PhoneNumber, string EmailAddress, string? CompanyName, int[] MeetingIds);
 
-        public Task<Customer?> GetCustomerAsync(int Id);
+        Task<Customer?> GetCustomerAsync(int Id);
 
-        public Task<CustomerResponse?> CustomerInfoToDisplayAsync(int customerId);
+        Task<CustomerResponse?> CustomerInfoToDisplayAsync(int customerId);
 
-        public Task<IEnumerable<Customer?>?> GetCustomersAsync();
+        Task<List<Customer>?> GetCustomersAsync(int[] ids);
 
-        public Task<bool> CreateCustomerAsync(CreateCustomerRequest request);
+        Task<List<Customer>?> GetAllCustomersAsync();
 
-        public Task<bool> UpdateCustomerAsync(UpdateCustomerRequest request);
+        Task<bool> CreateCustomerAsync(CreateCustomerRequest request);
 
-        public Task<bool> DeleteCustomerAsync(int customerId);
+        Task<bool> UpdateCustomerAsync(UpdateCustomerRequest request);
+
+        Task<bool> DeleteCustomerAsync(int customerId);
     }
 }

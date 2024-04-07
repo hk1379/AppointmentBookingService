@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace AppointmentBooking.Context.Models
 {
@@ -12,30 +13,43 @@ namespace AppointmentBooking.Context.Models
         [Column("Id", Order = 0)]
         public int Id { get; set; }
 
-        [Required]
-        [Column("Name", Order = 1)]
-        public string MeetingName { get; set; } = string.Empty;
+        //[Required]
+        //[Column("CompanyId", Order = 1)]
+        //public int CompanyId { get; set; }
 
         [Required]
-        [Column("HostPhoneNumber", Order = 2)]
-        public string? CustomerPhoneNumber { get; set; }
+        [Column("FromDateTime", Order = 1)]
+        public DateTime FromDateTime { get; set; }
 
         [Required]
-        [Column("AttendeePhoneNumber", Order = 3)]
-        public string? CompanyPhoneNumber { get; set; }
+        [Column("Duration", Order = 2)]
+        public int Duration { get; set; }
 
         [Required]
-        [Column("HostEmailAddress", Order = 4)]
-        public string? CustomerEmailAddress { get; set; }
+        [Column("Title", Order = 3)]
+        public required string Title { get; set; }
 
         [Required]
-        [Column("AttendeeEmailAddress", Order = 5)]
-        public string? CompanyEmailAddress { get; set; }
+        [Column("Status", Order = 4)]
+        public required string Status { get; set; }
 
-        //[ForeignKey(nameof(CustomerId))]
-        //[Column("CustomerId", Order = 6)]
-        //public string? CustomerId { get; set; }
+        [Required]
+        [Column("Location", Order = 5)]
+        public required string Location { get; set; }
 
+        [Required]
+        [Column("Description", Order = 6)]
+        public required string Description { get; set; }
+
+        [Column("ReservationPaid", Order = 7)]
+        public bool? ReservationPaid { get; set; }
+
+        // stops the get all api from showing companies
+        [JsonIgnore]
+        public List<Company>? Companies { get; set; }
+
+        // stops the get all api from showing customers
+        [JsonIgnore]
         public List<Customer>? Customers { get; set; }
     }
 }
