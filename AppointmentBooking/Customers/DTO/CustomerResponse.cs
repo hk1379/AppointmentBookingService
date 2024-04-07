@@ -10,6 +10,6 @@
 
         public string EmailAddress { get; set; } = string.Empty;
 
-        public string? CompanyName { get; set; } = string.Empty;
+        public string? CompanyName { get; set; }
     }
 }

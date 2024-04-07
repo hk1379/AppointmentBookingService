@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\hk123\\OneDrive\\Documents\\Development\\repository\\AppointmentBookingService\\AppointmentBooking\\AppointmentBooking.csproj": {}
+    "C:\\Users\\hk123\\Documents\\Development\\repository\\AppointmentBookingService\\AppointmentBooking\\AppointmentBooking.csproj": {}
   },
   "projects": {
-    "C:\\Users\\hk123\\OneDrive\\Documents\\Development\\repository\\AppointmentBookingService\\AppointmentBooking\\AppointmentBooking.csproj": {
+    "C:\\Users\\hk123\\Documents\\Development\\repository\\AppointmentBookingService\\AppointmentBooking\\AppointmentBooking.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\hk123\\OneDrive\\Documents\\Development\\repository\\AppointmentBookingService\\AppointmentBooking\\AppointmentBooking.csproj",
+        "projectUniqueName": "C:\\Users\\hk123\\Documents\\Development\\repository\\AppointmentBookingService\\AppointmentBooking\\AppointmentBooking.csproj",
         "projectName": "AppointmentBooking",
-        "projectPath": "C:\\Users\\hk123\\OneDrive\\Documents\\Development\\repository\\AppointmentBookingService\\AppointmentBooking\\AppointmentBooking.csproj",
+        "projectPath": "C:\\Users\\hk123\\Documents\\Development\\repository\\AppointmentBookingService\\AppointmentBooking\\AppointmentBooking.csproj",
         "packagesPath": "C:\\Users\\hk123\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\hk123\\OneDrive\\Documents\\Development\\repository\\AppointmentBookingService\\AppointmentBooking\\obj\\",
+        "outputPath": "C:\\Users\\hk123\\Documents\\Development\\repository\\AppointmentBookingService\\AppointmentBooking\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\hk123\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -57,6 +57,12 @@
               "version": "[7.0.10, )"
             },
             "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[7.0.10, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
               "target": "Package",
               "version": "[7.0.10, )"
             },

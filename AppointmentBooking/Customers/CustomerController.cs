@@ -52,7 +52,7 @@
         {
             try
             {
-                IEnumerable<Customer?>? customers = await _customerService.GetCustomersAsync();
+                IEnumerable<Customer?>? customers = await _customerService.GetAllCustomersAsync();
                 
                 if (customers != null)
                 {
@@ -86,7 +86,8 @@
                     else
                         return this.StatusCode((int) HttpStatusCode.InternalServerError);
                 }
-                return this.StatusCode((int) HttpStatusCode.BadRequest);
+
+                return this.BadRequest();
             }
             catch (Exception ex)
             {
@@ -112,7 +113,7 @@
                         return this.StatusCode((int)HttpStatusCode.InternalServerError);
                 }
 
-                return this.StatusCode((int) HttpStatusCode.BadRequest);
+                return this.BadRequest();
             }
             catch(Exception ex)
             {

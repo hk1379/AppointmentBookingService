@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace AppointmentBooking.Context.Models
 {
@@ -14,23 +15,21 @@ namespace AppointmentBooking.Context.Models
 
         [Required]
         [Column("Name", Order = 1)]
-        public string Name { get; set; } = null!;
+        public required string Name { get; set; }
 
         [Required]
         [Column("PhoneNumber", Order = 2)]
-        public string PhoneNumber { get; set; } = null!;
+        public required string PhoneNumber { get; set; }
 
         [Required]
         [Column("EmailAddress", Order = 3)]
-        public string EmailAddress { get; set; } = null!;
+        public required string EmailAddress { get; set; }
 
         [Column("CompanyName", Order = 4)]
         public string? CompanyName { get; set; }
 
-        //[ForeignKey(nameof(MeetingId))]
-        //[Column("CustomerId", Order = 5)]
-        //public string? MeetingId { get; set; }
-
-        public List<Meeting>? Meetings { get; set; } = new ();
+        // stops the get all api from showing meetings
+        [JsonIgnore]
+        public List<Meeting>? Meetings { get; set; } = new();
     }
 }

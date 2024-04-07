@@ -11,7 +11,9 @@
         private readonly ILogger<ICustomerService> _logger;
         private readonly AppointmentBookingDbContext _context;
 
-        public CustomerService(ILogger<ICustomerService> logger, AppointmentBookingDbContext context)
+        public CustomerService(
+            ILogger<ICustomerService> logger,
+            AppointmentBookingDbContext context)
         {
             _logger = logger;
             _context = context;
@@ -19,6 +21,9 @@
 
         public async Task<Customer?> GetCustomerAsync(int id) =>
             await _context.Customers.AsNoTracking().SingleOrDefaultAsync(c => c.Id == id).ConfigureAwait(false);
+
+        public async Task<Customer?> GetCustomerTrackingAsync(int id) =>
+            await _context.Customers.SingleOrDefaultAsync(c => c.Id == id).ConfigureAwait(false);
 
         public async Task<CustomerResponse?> CustomerInfoToDisplayAsync(int id)
         {            
@@ -39,8 +44,11 @@
             return null;
         }
 
-        public async Task<IEnumerable<Customer?>?> GetCustomersAsync() =>
-            await _context.Customers.AsNoTracking().ToListAsync().ConfigureAwait(false);
+        public async Task<List<Customer>?> GetCustomersAsync(int[] ids) =>
+            await _context.Customers.AsNoTracking().Where(c => ids.Contains(c.Id)).ToListAsync();
+
+        public async Task<List<Customer>?> GetAllCustomersAsync() =>
+            await _context.Customers.AsNoTracking().ToListAsync();
 
         public async Task<bool> CreateCustomerAsync(CreateCustomerRequest request)
         {
@@ -48,16 +56,15 @@
 
             if (request != null)
             {
-                Customer customer = new ()
+                Customer customer = new()
                 {
                     Name = request.Name,
                     EmailAddress = request.EmailAddress,
                     PhoneNumber = request.PhoneNumber,
                     CompanyName = request.CompanyName,
-                    // MeetingId = request.MeetingId,
                 };
 
-                _context.Add(customer);
+                _context.Customers.Add(customer);
                 entriesSaved = await _context.SaveChangesAsync().ConfigureAwait(false);
             }
             else
@@ -69,14 +76,14 @@
 
                 throw new ArgumentNullException(nameof(request));
             }
-            
-            bool isCustomerSaved = entriesSaved == 1;
+
+            bool isCustomerSaved = entriesSaved >= 1;
             return isCustomerSaved;
         }
 
         public async Task<bool> UpdateCustomerAsync(UpdateCustomerRequest request)
         {
-            Customer? customer = await this.GetCustomerAsync(request.Id).ConfigureAwait(false);
+            Customer? customer = await this.GetCustomerTrackingAsync(request.Id).ConfigureAwait(false);
 
             if (customer != null)
             {
@@ -85,9 +92,6 @@
                 customer.PhoneNumber = request.PhoneNumber;
                 customer.EmailAddress = request.EmailAddress;
                 customer.CompanyName = request.CompanyName;
-                // customer.MeetingId = request.MeetingId;
-
-                _context.Customers.Update(customer);
             }
 
             int entriesSaved = await _context.SaveChangesAsync().ConfigureAwait(false);
