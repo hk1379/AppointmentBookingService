@@ -1,13 +1,13 @@
 ﻿namespace AppointmentBooking.Meetings
 {
     using AppointmentBooking.Context.Models;
-    using AppointmentBooking.Meetings.Requests;
+    using AppointmentBooking.Meetings.DTO;
 
     public interface IMeetingService
     {
-        // public record CreateMeetingRequest(string MeetingName, string? CustomerPhoneNumber, string? CompanyPhoneNumber, string? CustomerEmailAddress, string? CompanyEmailAddress, int[] CustomerIds);
+        public record CreateMeetingRequest(string Title, DateTime FromDateTime, int Duration, string Status, string Location, string Description, bool ReservationPaid);
 
-        // public record UpdateMeetingRequest(int Id, string MeetingName, string? CustomerPhoneNumber, string? CompanyPhoneNumber, string? CustomerEmailAddress, string? CompanyEmailAddress, int[] CustomerIds);
+        public record UpdateMeetingRequest(int Id, string Title, DateTime FromDateTime, int Duration, string Status, string Location, string Description, bool ReservationPaid);
 
         public record CustomersToMeetingRequest(int MeetingId, int[] CustomerIds);
 
