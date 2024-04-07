@@ -5,11 +5,9 @@ namespace AppointmentBooking.Customers
 {
     public interface ICustomerService
     {
-        public record CreateCustomerRequest(string Name, string PhoneNumber, string EmailAddress, string? CompanyName);
+        record CreateCustomerRequest(string Name, string PhoneNumber, string EmailAddress, string? CompanyName);
 
-        public record UpdateCustomerRequest(int Id, string Name, string PhoneNumber, string EmailAddress, string? CompanyName, int[] MeetingIds);
-
-        Task<Customer?> GetCustomerAsync(int Id);
+        record UpdateCustomerRequest(int Id, string Name, string PhoneNumber, string EmailAddress, string? CompanyName, int[] MeetingIds);
 
         Task<CustomerResponse?> CustomerInfoToDisplayAsync(int customerId);
 
