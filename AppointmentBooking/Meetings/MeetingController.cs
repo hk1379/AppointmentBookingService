@@ -4,7 +4,7 @@
     using AppointmentBooking.Context.Models;
     using static AppointmentBooking.Meetings.IMeetingService;
     using Microsoft.AspNetCore.Mvc;
-    using AppointmentBooking.Meetings.Requests;
+    using AppointmentBooking.Meetings.DTO;
 
     [Route("api/[controller]")]
     public class MeetingController : Controller

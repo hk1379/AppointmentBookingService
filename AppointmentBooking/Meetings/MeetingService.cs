@@ -5,7 +5,7 @@
     using AppointmentBooking.Context;
     using AppointmentBooking.Context.Models;
     using AppointmentBooking.Customers;
-    using AppointmentBooking.Meetings.Requests;
+    using AppointmentBooking.Meetings.DTO;
     using Microsoft.EntityFrameworkCore;
     using static AppointmentBooking.Meetings.IMeetingService;
 
