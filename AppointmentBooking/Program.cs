@@ -2,6 +2,7 @@ using AppointmentBooking.Companies;
 using AppointmentBooking.Context;
 using AppointmentBooking.Customers;
 using AppointmentBooking.Meetings;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,6 +19,38 @@ builder.Services.AddDbContext<AppointmentBookingDbContext>(options => options
 //builder.Services.AddHealthChecks().AddSqlServer(connectionString, "SELECT 1", "AppointBooking");
 //builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
+// Configuring Microsoft Identity
+//builder.Services.Configure<IdentityOptions>(options =>
+//{
+//    // Default Lockout settings.
+//    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+//    options.Lockout.MaxFailedAccessAttempts = 5;
+//    options.Lockout.AllowedForNewUsers = true;
+
+//    // Default Password settings.
+//    options.Password.RequireDigit = true;
+//    options.Password.RequireLowercase = true;
+//    options.Password.RequireNonAlphanumeric = true;
+//    options.Password.RequireUppercase = true;
+//    options.Password.RequiredLength = 6;
+//    options.Password.RequiredUniqueChars = 1;
+
+//    // Default SignIn settings.
+//    options.SignIn.RequireConfirmedEmail = false;
+//    options.SignIn.RequireConfirmedPhoneNumber = false;
+
+//    // Default User settings.
+//    options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
+//    options.User.RequireUniqueEmail = false;
+//});
+
+// Identity with a default UI
+builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddEntityFrameworkStores<AppointmentBookingDbContext>();
+
+builder.Services.AddIdentityServer()
+    .AddApiAuthorization<IdentityUser, AppointmentBookingDbContext>();
+
 // Add services to the container.
 builder.Services.AddTransient<ICustomerService, CustomerService>();
 builder.Services.AddTransient<ICompanyService, CompanyService>();
@@ -28,12 +61,6 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// ignore dependency cycles which is giving errors due to circular relationship between customers and meetings
-//builder.Services.AddControllers()
-//    .AddJsonOptions(options =>
-//    {
-//        options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
-//    });
 
 var app = builder.Build();
 
