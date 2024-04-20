@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace AppointmentBooking.Context.Models
 {
-    [Table(name: "AppointmentCustomers")]
+    [Table(name: "Customers")]
     public class Customer
     {
         [Key]
