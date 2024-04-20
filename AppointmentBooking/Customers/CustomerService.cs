@@ -20,10 +20,10 @@
         }
 
         private async Task<Customer?> GetCustomerAsync(int id) =>
-            await _context.AppointmentCustomers.AsNoTracking().SingleOrDefaultAsync(c => c.Id == id).ConfigureAwait(false);
+            await _context.Customers.AsNoTracking().SingleOrDefaultAsync(c => c.Id == id).ConfigureAwait(false);
 
         private async Task<Customer?> GetCustomerTrackingAsync(int id) =>
-            await _context.AppointmentCustomers.SingleOrDefaultAsync(c => c.Id == id).ConfigureAwait(false);
+            await _context.Customers.SingleOrDefaultAsync(c => c.Id == id).ConfigureAwait(false);
 
         public async Task<CustomerResponse?> CustomerInfoToDisplayAsync(int id)
         {            
@@ -45,10 +45,10 @@
         }
 
         public async Task<List<Customer>?> GetCustomersAsync(int[] ids) =>
-            await _context.AppointmentCustomers.AsNoTracking().Where(c => ids.Contains(c.Id)).ToListAsync();
+            await _context.Customers.AsNoTracking().Where(c => ids.Contains(c.Id)).ToListAsync();
 
         public async Task<List<Customer>?> GetAllCustomersAsync() =>
-            await _context.AppointmentCustomers.AsNoTracking().ToListAsync();
+            await _context.Customers.AsNoTracking().ToListAsync();
 
         public async Task<bool> CreateCustomerAsync(CreateCustomerRequest request)
         {
@@ -64,7 +64,7 @@
                     CompanyName = request.CompanyName,
                 };
 
-                _context.AppointmentCustomers.Add(customer);
+                _context.Customers.Add(customer);
                 entriesSaved = await _context.SaveChangesAsync().ConfigureAwait(false);
             }
             else
