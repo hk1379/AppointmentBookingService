@@ -5,8 +5,11 @@
     using static AppointmentBooking.Meetings.IMeetingService;
     using Microsoft.AspNetCore.Mvc;
     using AppointmentBooking.Meetings.DTO;
+    using Microsoft.AspNetCore.Authorization;
 
     [Route("api/[controller]")]
+    [Authorize]
+    [ApiController]
     public class MeetingController : Controller
     {
         private readonly ILogger<MeetingController> _logger;

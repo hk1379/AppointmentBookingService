@@ -2,11 +2,13 @@
 {
     using AppointmentBooking.Context.Models;
     using AppointmentBooking.Customers.DTO;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using System.Net;
     using static AppointmentBooking.Customers.ICustomerService;
 
     [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
     public class CustomerController : ControllerBase
     {

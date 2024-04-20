@@ -3,10 +3,12 @@ using System.Net;
 using AppointmentBooking.Companies.DTO;
 using static AppointmentBooking.Companies.ICompanyService;
 using AppointmentBooking.Context.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AppointmentBooking.Companies
 {
     [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
     public class CompanyController : Controller
     {
