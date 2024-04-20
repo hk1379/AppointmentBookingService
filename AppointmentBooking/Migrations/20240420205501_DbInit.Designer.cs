@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppointmentBooking.Migrations
 {
     [DbContext(typeof(AppointmentBookingDbContext))]
-    [Migration("20240405234439_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20240420205501_DbInit")]
+    partial class DbInit
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -93,7 +93,7 @@ namespace AppointmentBooking.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Customers");
+                    b.ToTable("AppointmentCustomers");
                 });
 
             modelBuilder.Entity("AppointmentBooking.Context.Models.Meeting", b =>
