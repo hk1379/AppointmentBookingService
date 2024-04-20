@@ -90,7 +90,7 @@ namespace AppointmentBooking.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Customers");
+                    b.ToTable("AppointmentCustomers");
                 });
 
             modelBuilder.Entity("AppointmentBooking.Context.Models.Meeting", b =>
