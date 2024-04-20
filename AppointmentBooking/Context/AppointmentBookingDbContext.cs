@@ -11,7 +11,7 @@ namespace AppointmentBooking.Context
         {
         }
 
-        public DbSet<Customer> Customers { get; set; }
+        public DbSet<Customer> AppointmentCustomers { get; set; }
         public DbSet<Company> Company { get; set; }
         public DbSet<Meeting> Meetings { get; set; }
 
