@@ -1,9 +1,11 @@
 ﻿using AppointmentBooking.Context.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace AppointmentBooking.Context
 {
-    public class AppointmentBookingDbContext : DbContext
+    public class AppointmentBookingDbContext : IdentityDbContext<IdentityUser>
     {
         public AppointmentBookingDbContext(DbContextOptions<AppointmentBookingDbContext> options) : base(options)
         {
@@ -15,6 +17,8 @@ namespace AppointmentBooking.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             // many-(customers)-to-many(meetings)
             modelBuilder
                 .Entity<Customer>()

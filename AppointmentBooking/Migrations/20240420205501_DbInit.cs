@@ -6,11 +6,27 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace AppointmentBooking.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialMigration : Migration
+    public partial class DbInit : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "AppointmentCustomers",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    EmailAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CompanyName = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AppointmentCustomers", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "Companies",
                 columns: table => new
@@ -24,22 +40,6 @@ namespace AppointmentBooking.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Companies", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Customers",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    EmailAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CompanyName = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Customers", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -96,9 +96,9 @@ namespace AppointmentBooking.Migrations
                 {
                     table.PrimaryKey("PK_CustomerMeeting", x => new { x.CustomersId, x.MeetingsId });
                     table.ForeignKey(
-                        name: "FK_CustomerMeeting_Customers_CustomersId",
+                        name: "FK_CustomerMeeting_AppointmentCustomers_CustomersId",
                         column: x => x.CustomersId,
-                        principalTable: "Customers",
+                        principalTable: "AppointmentCustomers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -133,7 +133,7 @@ namespace AppointmentBooking.Migrations
                 name: "Companies");
 
             migrationBuilder.DropTable(
-                name: "Customers");
+                name: "AppointmentCustomers");
 
             migrationBuilder.DropTable(
                 name: "Meetings");
