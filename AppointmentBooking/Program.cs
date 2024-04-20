@@ -8,48 +8,27 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add db context
-// builder.Services.AddDbContext<AppointmentBookingDbContext>(options => options.UseInMemoryDatabase("AppointmentBooking"));
-var connectionstring = builder.Configuration.GetConnectionString("applicationbookingdb");
+builder.Services.AddDbContext<AppointmentBookingDbContext>(options => options.UseInMemoryDatabase("AppointmentBooking"));
 
-builder.Services.AddDbContext<AppointmentBookingDbContext>(options => options
-    .UseSqlServer(connectionstring)
-    .EnableSensitiveDataLogging()
-    .EnableDetailedErrors());
+//var connectionstring = builder.Configuration.GetConnectionString("applicationbookingdb");
+
+//builder.Services.AddDbContext<AppointmentBookingDbContext>(options => options
+//    .UseSqlServer(connectionstring)
+//    .EnableSensitiveDataLogging()
+//    .EnableDetailedErrors());
 
 //builder.Services.AddHealthChecks().AddSqlServer(connectionString, "SELECT 1", "AppointBooking");
 //builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-// Configuring Microsoft Identity
-//builder.Services.Configure<IdentityOptions>(options =>
-//{
-//    // Default Lockout settings.
-//    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
-//    options.Lockout.MaxFailedAccessAttempts = 5;
-//    options.Lockout.AllowedForNewUsers = true;
+// Configure identity to use EF Databases and expose endpoints
+builder.Services.AddIdentityCore<IdentityUser>()
+   .AddEntityFrameworkStores<AppointmentBookingDbContext>()
+   .AddApiEndpoints();
 
-//    // Default Password settings.
-//    options.Password.RequireDigit = true;
-//    options.Password.RequireLowercase = true;
-//    options.Password.RequireNonAlphanumeric = true;
-//    options.Password.RequireUppercase = true;
-//    options.Password.RequiredLength = 6;
-//    options.Password.RequiredUniqueChars = 1;
-
-//    // Default SignIn settings.
-//    options.SignIn.RequireConfirmedEmail = false;
-//    options.SignIn.RequireConfirmedPhoneNumber = false;
-
-//    // Default User settings.
-//    options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
-//    options.User.RequireUniqueEmail = false;
-//});
-
-// Identity with a default UI
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<AppointmentBookingDbContext>();
-
-builder.Services.AddIdentityServer()
-    .AddApiAuthorization<IdentityUser, AppointmentBookingDbContext>();
+// Adding cookie authentication
+// builder.Services.AddAuthentication().AddBearerToken(IdentityConstants.BearerScheme);
+builder.Services.AddAuthentication(IdentityConstants.ApplicationScheme).AddIdentityCookies();
+builder.Services.AddAuthorizationBuilder();
 
 // Add services to the container.
 builder.Services.AddTransient<ICustomerService, CustomerService>();
@@ -75,6 +54,8 @@ app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
+// mapping routes for identity endpoints
+app.MapIdentityApi<IdentityUser>();
 app.MapControllers();
 
 app.Run();

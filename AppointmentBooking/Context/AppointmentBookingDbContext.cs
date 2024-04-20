@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AppointmentBooking.Context
 {
-    public class AppointmentBookingDbContext : IdentityDbContext<IdentityUser, IdentityRole, string>
+    public class AppointmentBookingDbContext : IdentityDbContext<IdentityUser>
     {
         public AppointmentBookingDbContext(DbContextOptions<AppointmentBookingDbContext> options) : base(options)
         {
