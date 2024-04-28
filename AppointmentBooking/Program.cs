@@ -8,14 +8,14 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add db context
-// builder.Services.AddDbContext<AppointmentBookingDbContext>(options => options.UseInMemoryDatabase("AppointmentBooking"));
+builder.Services.AddDbContext<AppointmentBookingDbContext>(options => options.UseInMemoryDatabase("AppointmentBooking"));
 
 var connectionstring = builder.Configuration.GetConnectionString("applicationbookingdb");
 
-builder.Services.AddDbContext<AppointmentBookingDbContext>(options => options
-    .UseSqlServer(connectionstring)
-    .EnableSensitiveDataLogging()
-    .EnableDetailedErrors());
+//builder.Services.AddDbContext<AppointmentBookingDbContext>(options => options
+//    .UseSqlServer(connectionstring)
+//    .EnableSensitiveDataLogging()
+//    .EnableDetailedErrors());
 
 //builder.Services.AddHealthChecks().AddSqlServer(connectionString, "SELECT 1", "AppointBooking");
 //builder.Services.AddDatabaseDeveloperPageExceptionFilter();
