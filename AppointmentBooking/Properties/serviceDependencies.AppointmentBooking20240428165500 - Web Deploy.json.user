@@ -1,20 +1,4 @@
 {
-  "dependencies": {
-    "mssql1": {
-      "restored": true,
-      "restoreTime": "2024-04-28T16:47:57.7768599Z"
-    }
-  },
-  "parameters": {
-    "mssql1.subscriptionId": {
-      "Name": "mssql1.subscriptionId",
-      "Type": "subscription",
-      "Value": "33e09f91-160b-46c8-a04f-130471e8c574"
-    },
-    "mssql1.resourceGroupName": {
-      "Name": "mssql1.resourceGroupName",
-      "Type": "resourceGroup",
-      "Value": "HkResourceGroup"
-    }
-  }
+  "dependencies": {},
+  "parameters": {}
 }
