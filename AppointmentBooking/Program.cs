@@ -58,6 +58,6 @@ app.UseAuthorization();
 // mapping routes for identity endpoints
 app.MapIdentityApi<IdentityUser>();
 app.MapControllers();
-app.MapHealthChecks("/healthz");
+app.MapHealthChecks("/healthcheck");
 
 app.Run();
