@@ -40,6 +40,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddHealthChecks();
 
 var app = builder.Build();
 
@@ -57,5 +58,6 @@ app.UseAuthorization();
 // mapping routes for identity endpoints
 app.MapIdentityApi<IdentityUser>();
 app.MapControllers();
+app.MapHealthChecks("/healthz");
 
 app.Run();
