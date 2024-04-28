@@ -9,6 +9,10 @@ namespace AppointmentBooking.Customers
 
         record UpdateCustomerRequest(int Id, string Name, string PhoneNumber, string EmailAddress, string? CompanyName, int[] MeetingIds);
 
+        Task<Customer?> GetCustomerAsync(int id);
+
+        Task<Customer?> GetCustomerTrackingAsync(int id);
+
         Task<CustomerResponse?> CustomerInfoToDisplayAsync(int customerId);
 
         Task<List<Customer>?> GetCustomersAsync(int[] ids);

@@ -30,6 +30,6 @@ namespace AppointmentBooking.Context.Models
 
         // stops the get all api from showing meetings
         [JsonIgnore]
-        public List<Meeting>? Meetings { get; set; } = new();
+        public List<Meeting>? Meetings { get; set; }
     }
 }

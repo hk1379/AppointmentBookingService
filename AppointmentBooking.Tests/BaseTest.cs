@@ -7,20 +7,20 @@ using Microsoft.EntityFrameworkCore;
 
 public abstract class BaseTest
 {
-    public BaseTest()
-    {
-        Fixture = new Fixture().Customize(new AutoMoqCustomization() { ConfigureMembers = true });
-
-        var options = new DbContextOptionsBuilder<AppointmentBookingDbContext>()
-            .UseInMemoryDatabase(databaseName: Fixture.Create<string>()).Options;
-        Context = new AppointmentBookingDbContext(options);
-
-        Fixture.Inject(Context);
-    }
-
     /// <summary>
     /// Gets the auto fixture instance.
     /// </summary>
-    protected IFixture Fixture { get; }
-    protected AppointmentBookingDbContext Context { get; }
+    protected readonly IFixture fixture;
+    protected readonly AppointmentBookingDbContext context;
+
+    public BaseTest()
+    {
+        fixture = new Fixture().Customize(new AutoMoqCustomization() { ConfigureMembers = true });
+
+        var options = new DbContextOptionsBuilder<AppointmentBookingDbContext>()
+            .UseInMemoryDatabase(databaseName: fixture.Create<string>()).Options;
+        context = new AppointmentBookingDbContext(options);
+
+        fixture.Inject(context);
+    }
 }
