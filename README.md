@@ -14,4 +14,4 @@ Start the docker container:
 docker start appointment-booking-container
 
 Stopping the docker container:
-docker start appointment-booking-container
+docker stop appointment-booking-container
