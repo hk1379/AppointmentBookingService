@@ -1,4 +1,4 @@
-﻿namespace AppointmentBooking.Customers.DTO
+﻿namespace AppointmentBooking.Customers.Responses
 {
     public class CustomerResponse
     {

@@ -1,7 +1,8 @@
 ﻿namespace AppointmentBooking.Customers
 {
     using AppointmentBooking.Context.Models;
-    using AppointmentBooking.Customers.DTO;
+    using AppointmentBooking.Customers.Requests;
+    using AppointmentBooking.Customers.Responses;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using System.Net;

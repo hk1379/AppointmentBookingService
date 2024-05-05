@@ -19,37 +19,29 @@ namespace AppointmentBooking.Context
         {
             base.OnModelCreating(modelBuilder);
 
+            //// creating a unique index for customer table
+            //modelBuilder
+            //    .Entity<Customer>()
+            //    .HasIndex(c => new { c.PhoneNumber, c.EmailAddress })
+            //    .IsUnique();
+
             // many-(customers)-to-many(meetings)
             modelBuilder
                 .Entity<Customer>()
                 .HasMany(c => c.Meetings)
                 .WithMany(m => m.Customers);
 
+            //// creating a unique index for company table
+            //modelBuilder
+            //    .Entity<Company>()
+            //    .HasIndex(c => new { c.PhoneNumber, c.EmailAddress })
+            //    .IsUnique();
+
             // many-(companies)-to-many(meetings)
             modelBuilder
                 .Entity<Company>()
                 .HasMany(c => c.Meetings)
                 .WithMany(m => m.Companies);
-
-            //modelBuilder
-            //    .Entity<Customer>()
-            //    .Property(c => c.Meetings)
-            //    .ValueGeneratedOnAdd();
-
-            //modelBuilder
-            //    .Entity<Company>()
-            //    .Property(c => c.Meetings)
-            //    .ValueGeneratedOnAdd();
-
-            //modelBuilder
-            //    .Entity<Meeting>()
-            //    .Property(m => m.Customers)
-            //    .ValueGeneratedOnAdd();
-
-            //modelBuilder
-            //    .Entity<Meeting>()
-            //    .Property(m => m.Companies)
-            //    .ValueGeneratedOnAdd();
         }
     }
 }

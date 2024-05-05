@@ -2,7 +2,7 @@
 
 using AppointmentBooking.Context.Models;
 using AppointmentBooking.Customers;
-using AppointmentBooking.Customers.DTO;
+using AppointmentBooking.Customers.Responses;
 using AutoFixture;
 using AutoFixture.Xunit2;
 using Moq;
