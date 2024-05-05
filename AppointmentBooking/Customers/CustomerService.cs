@@ -5,7 +5,6 @@ using AppointmentBooking.Context.Models;
 using AppointmentBooking.Customers.Requests;
 using AppointmentBooking.Customers.Responses;
 using Microsoft.EntityFrameworkCore;
-using static AppointmentBooking.Customers.ICustomerService;
 
 public class CustomerService : ICustomerService
 {
@@ -67,7 +66,7 @@ public class CustomerService : ICustomerService
         };
 
         _context.Customers.Add(customer);
-        int entriesSaved = await _context.SaveChangesAsync().ConfigureAwait(false);
+        int entriesSaved = _context.SaveChanges();
 
         bool isCustomerSaved = entriesSaved >= 1;
         return isCustomerSaved;
@@ -88,18 +87,18 @@ public class CustomerService : ICustomerService
             customer.CompanyName = request?.CompanyName != null ? request.CompanyName : customer.CompanyName;
         }
 
-        int entriesSaved = await _context.SaveChangesAsync().ConfigureAwait(false);
+        int entriesSaved = _context.SaveChanges();
         return entriesSaved >= 1;
     }
 
     public async Task<bool> DeleteCustomerAsync(int Id)
     {
-        Customer? customer = await this.GetCustomerAsync(Id).ConfigureAwait(false);
+        Customer? customer = await this.GetCustomerTrackingAsync(Id).ConfigureAwait(false);
 
         if (customer != null)
         {
             _context.Remove(customer);
-            int entriesSaved = await _context.SaveChangesAsync().ConfigureAwait(false);
+            int entriesSaved = _context.SaveChanges();
 
             return entriesSaved >= 1;
         }

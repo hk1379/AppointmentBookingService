@@ -28,15 +28,16 @@ public class UpdateCustomerAsyncTests : BaseTest
         context.SaveChanges();
     }
 
-    [Theory, AutoData]
-    public async Task UpdateCustomerAsync_DifferentCustomerDetailsGiven_ReturnsTrue(string name, string phoneNumber, string emailAddress, string companyName)
+    [Theory]
+    [InlineAutoData(1)]
+    public async Task UpdateCustomerAsync_DifferentCustomerDetailsGiven_ReturnsTrue(int id, string name, string phoneNumber, string emailAddress, string companyName)
     {
         // arrange
         CreateAndSaveCustomer(fixture.Create<string>(), fixture.Create<string>(), fixture.Create<string>(), fixture.Create<string>());
 
         UpdateCustomerRequest updateCustomerRequest = fixture
             .Build<UpdateCustomerRequest>()
-            .With(c => c.Id, 1)
+            .With(c => c.Id, id)
             .With(c => c.Name, name)
             .With(c => c.PhoneNumber, phoneNumber)
             .With(c => c.EmailAddress, emailAddress)
@@ -52,15 +53,16 @@ public class UpdateCustomerAsyncTests : BaseTest
         Assert.True(customerUpdated);
     }
 
-    [Theory, AutoData]
-    public async Task UpdateCustomerAsync_OneCustomerDetailsChanged_ReturnsTrue(string name, string phoneNumber, string emailAddress, string companyName)
+    [Theory]
+    [InlineAutoData(1)]
+    public async Task UpdateCustomerAsync_OneCustomerDetailsChanged_ReturnsTrue(int id, string name, string phoneNumber, string emailAddress, string companyName)
     {
         // arrange
         CreateAndSaveCustomer(fixture.Create<string>(), phoneNumber, emailAddress, companyName);
 
         UpdateCustomerRequest updateCustomerRequest = fixture
             .Build<UpdateCustomerRequest>()
-            .With(c => c.Id, 1)
+            .With(c => c.Id, id)
             .With(c => c.Name, name)
             .With(c => c.PhoneNumber, phoneNumber)
             .With(c => c.EmailAddress, emailAddress)
@@ -76,15 +78,16 @@ public class UpdateCustomerAsyncTests : BaseTest
         Assert.True(customerUpdated);
     }
 
-    [Theory, AutoData]
-    public async Task UpdateCustomerAsync_WrongCustomerIdGiven_ReturnsFalse(string name, string phoneNumber, string emailAddress, string companyName)
+    [Theory]
+    [InlineAutoData(100)]
+    public async Task UpdateCustomerAsync_WrongCustomerIdGiven_ReturnsFalse(int id, string name, string phoneNumber, string emailAddress, string companyName)
     {
         // arrange
         CreateAndSaveCustomer(fixture.Create<string>(), fixture.Create<string>(), fixture.Create<string>(), fixture.Create<string>());
 
         UpdateCustomerRequest updateCustomerRequest = fixture
             .Build<UpdateCustomerRequest>()
-            .With(c => c.Id, 0)
+            .With(c => c.Id, id)
             .With(c => c.Name, name)
             .With(c => c.PhoneNumber, phoneNumber)
             .With(c => c.EmailAddress, emailAddress)
@@ -100,15 +103,16 @@ public class UpdateCustomerAsyncTests : BaseTest
         Assert.False(customerUpdated);
     }
 
-    [Theory, AutoData]
-    public async Task UpdateCustomerAsync_SameCustomerDetailsGiven_ReturnsFalse(string name, string phoneNumber, string emailAddress, string companyName)
+    [Theory]
+    [InlineAutoData(1)]
+    public async Task UpdateCustomerAsync_SameCustomerDetailsGiven_ReturnsFalse(int id, string name, string phoneNumber, string emailAddress, string companyName)
     {
         // arrange
         CreateAndSaveCustomer(name, phoneNumber, emailAddress, companyName);
 
         UpdateCustomerRequest updateCustomerRequest = fixture
             .Build<UpdateCustomerRequest>()
-            .With(c => c.Id, 1)
+            .With(c => c.Id, id)
             .With(c => c.Name, name)
             .With(c => c.PhoneNumber, phoneNumber)
             .With(c => c.EmailAddress, emailAddress)
