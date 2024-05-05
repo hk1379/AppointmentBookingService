@@ -36,7 +36,7 @@
 
         public async Task<MeetingResponse?> MeetingInfoToDisplayAsync(int Id)
         {
-            Meeting? meeting = await this.GetMeetingAsync(Id);
+            Meeting? meeting = await this.GetMeetingAsync(Id).ConfigureAwait(false);
 
             if (meeting != null)
             {
@@ -59,41 +59,29 @@
         public async Task<List<Meeting>?> GetAllMeetingsAsync() =>
             await _context.Meetings.AsNoTracking().ToListAsync();
 
-        public async Task<bool> CreateMeetingAsync(CreateMeetingRequest request)
+        public bool CreateMeeting(CreateMeetingRequest request)
         {
-            int entriesSaved;
-            // List<Customer>? customers = await _customerService.GetCustomersAsync(request.CustomerIds).ConfigureAwait(false);
+            ArgumentNullException.ThrowIfNull(request);
+            ArgumentNullException.ThrowIfNull(request.FromDateTime);
+            ArgumentNullException.ThrowIfNull(request.Duration);
+            ArgumentException.ThrowIfNullOrEmpty(request.Title);
+            ArgumentException.ThrowIfNullOrEmpty(request.Status);
+            ArgumentException.ThrowIfNullOrEmpty(request.Location);
+            ArgumentException.ThrowIfNullOrEmpty(request.Description);
 
-            if (request != null)
+            Meeting meeting = new()
             {
-                Meeting meeting = new()
-                {
-                    // CompanyId = request.CompanyId,
-                    FromDateTime = request.FromDateTime,
-                    Duration = request.Duration,
-                    Title = request.Title,
-                    Status = request.Status,
-                    Location = request.Location,
-                    Description = request.Description,
-                    ReservationPaid = request.ReservationPaid,
-                };
-
-                _context.Meetings.Add(meeting);
-                entriesSaved = await _context.SaveChangesAsync().ConfigureAwait(false);
-
-                //if (!customers.IsNullOrEmpty())
-                //{
-                //    meeting.Customers = customers;
-
-                //    _context.Meetings.Update(meeting);
-                //    entriesSaved += await _context.SaveChangesAsync().ConfigureAwait(false);
-                //}
-            }
-            else
-            {
-                _logger.LogError("Create Meeting Request is null: {request}", request);
-                throw new ArgumentNullException(nameof(request));
+                FromDateTime = request.FromDateTime,
+                Duration = request.Duration,
+                Title = request.Title,
+                Status = request.Status,
+                Location = request.Location,
+                Description = request.Description,
+                ReservationPaid = request.ReservationPaid,
             };
+
+            _context.Meetings.Add(meeting);
+            int entriesSaved = _context.SaveChanges();
 
             bool isMeetingSaved = entriesSaved >= 1;
             return isMeetingSaved;
@@ -101,8 +89,9 @@
 
         public async Task<bool> UpdateMeetingAsync(UpdateMeetingRequest request)
         {
+            ArgumentNullException.ThrowIfNull(request);
+
             Meeting? meeting = await this.GetMeetingTrackingAsync(request.Id).ConfigureAwait(false);
-            // List<Customer>? customers = await _customerService.GetCustomersAsync(request.CustomerIds).ConfigureAwait(false);
 
             if (meeting != null)
             {
@@ -113,51 +102,56 @@
                 meeting.Location = request.Location;
                 meeting.Description = request.Description;
                 meeting.ReservationPaid = request.ReservationPaid;
-
-            //    if (customers != null)
-            //        meeting.Customers = customers;
-            //
-            //    _context.Meetings.Update(meeting);
             };
 
-            int entriesSaved = await _context.SaveChangesAsync().ConfigureAwait(false);
+            int entriesSaved = _context.SaveChanges();
             return entriesSaved >= 1;
         }
 
-        public async Task<bool> AddCustomersToMeeting(CustomersToMeetingRequest request)
+        public async Task<bool> AddCustomersToMeetingAsync(CustomersToMeetingRequest request)
         {
+            ArgumentNullException.ThrowIfNull(request);
             int entriesSaved = 0;
 
-            Meeting? meeting = await this.GetMeetingTrackingAsync(request.MeetingId).ConfigureAwait(false);
-            List<Customer>? customers = await _customerService.GetCustomersAsync(request.CustomerIds).ConfigureAwait(false);
+            Task<Meeting?> meeting = this.GetMeetingTrackingAsync(request.MeetingId);
+            Task<List<Customer>?> customers = _customerService.GetCustomersAsync(request.CustomerIds);
+            await Task.WhenAll(meeting, customers);
+            Meeting? meetingResult = await meeting.ConfigureAwait(false);
+            List<Customer>? customerResult = await customers.ConfigureAwait(false);
 
-            if (meeting != null && customers != null)
+            if (meetingResult != null && customerResult != null)
             {
-                meeting.Customers = customers;
-                entriesSaved = await _context.SaveChangesAsync().ConfigureAwait(false);
+                meetingResult.Customers = customerResult;
+                entriesSaved = _context.SaveChanges();
             }
 
             return entriesSaved >= 1;
         }
 
-        public async Task<bool> AddCompaniesToMeeting(CompaniesToMeetingRequest request)
+        public async Task<bool> AddCompaniesToMeetingAsync(CompaniesToMeetingRequest request)
         {
+            ArgumentNullException.ThrowIfNull(request);
             int entriesSaved = 0;
 
-            Meeting? meeting = await this.GetMeetingTrackingAsync(request.MeetingId).ConfigureAwait(false);
-            List<Company>? companies = await _companyService.GetCompaniesAsync(request.CompanyIds).ConfigureAwait(false);
+            Task<Meeting?> meeting = this.GetMeetingTrackingAsync(request.MeetingId);
+            Task<List<Company>?> companies = _companyService.GetCompaniesAsync(request.CompanyIds);
+            await Task.WhenAll(meeting, companies);
+            Meeting? meetingResult = await meeting.ConfigureAwait(false);
+            List<Company>? companyResult = await companies.ConfigureAwait(false);
 
-            if (meeting != null && companies != null)
+            if (meetingResult != null && companyResult != null)
             {
-                meeting.Companies = companies;
-                entriesSaved = await _context.SaveChangesAsync().ConfigureAwait(false);
+                meetingResult.Companies = companyResult;
+                entriesSaved = _context.SaveChanges();
             }
 
             return entriesSaved >= 1;
         }
 
-        public async Task<bool> RemoveCustomersFromMeeting(CustomersToMeetingRequest request)
+        public async Task<bool> RemoveCustomersFromMeetingAsync(CustomersToMeetingRequest request)
         {
+            ArgumentNullException.ThrowIfNull(request);
+
             Meeting? meeting = await _context
                 .Meetings
                 .Include(m => m.Customers)
@@ -166,12 +160,14 @@
 
             meeting?.Customers?.RemoveAll(c => request.CustomerIds.Contains(c.Id));
 
-            int entriesSaved = await _context.SaveChangesAsync().ConfigureAwait(false);
+            int entriesSaved = _context.SaveChanges();
             return entriesSaved >= 1;
         }
 
-        public async Task<bool> RemoveCompaniesFromMeeting(CompaniesToMeetingRequest request)
+        public async Task<bool> RemoveCompaniesFromMeetingAsync(CompaniesToMeetingRequest request)
         {
+            ArgumentNullException.ThrowIfNull(request);
+
             Meeting? meeting = await _context
                 .Meetings
                 .Include(m => m.Companies)
@@ -180,7 +176,7 @@
 
             meeting?.Companies?.RemoveAll(c => request.CompanyIds.Contains(c.Id));
 
-            int entriesSaved = await _context.SaveChangesAsync().ConfigureAwait(false);
+            int entriesSaved = _context.SaveChanges();
             return entriesSaved >= 1;
         }
 
@@ -191,7 +187,7 @@
             if (meeting != null)
             {
                 _context.Remove(meeting);
-                int entriesSaved = await _context.SaveChangesAsync().ConfigureAwait(false);
+                int entriesSaved = _context.SaveChanges();
 
                 return entriesSaved >= 1;
             }

@@ -5,9 +5,9 @@ namespace AppointmentBooking.Companies
 {
     public interface ICompanyService
     {
-        record CreateCompanyRequest(string Name, string PhoneNumber, string EmailAddress, int[] MeetingIds);
+        record CreateCompanyRequest(string Name, string PhoneNumber, string EmailAddress);
 
-        record UpdateCompanyRequest(int Id, string Name, string PhoneNumber, string EmailAddress, int[] MeetingIds);
+        record UpdateCompanyRequest(int Id, string Name, string PhoneNumber, string EmailAddress);
 
         Task<CompanyResponse?> CompanyInfoToDisplayAsync(int companyId);
 
@@ -15,7 +15,7 @@ namespace AppointmentBooking.Companies
 
         Task<List<Company>?> GetAllCompaniesAsync();
 
-        Task<bool> CreateCompanyAsync(CreateCompanyRequest request);
+        bool CreateCompany(CreateCompanyRequest request);
 
         Task<bool> UpdateCompanyAsync(UpdateCompanyRequest request);
 

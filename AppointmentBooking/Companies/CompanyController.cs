@@ -72,13 +72,13 @@ namespace AppointmentBooking.Companies
 
         [HttpPost]
         [Route("create")]
-        public async Task<IActionResult> CreateCompanyAsync([FromBody] CreateCompanyRequest request)
+        public IActionResult CreateCompany([FromBody] CreateCompanyRequest request)
         {
             try
             {
                 if (request != null)
                 {
-                    bool companyCreated = await _companyService.CreateCompanyAsync(request).ConfigureAwait(false);
+                    bool companyCreated = _companyService.CreateCompany(request);
 
                     if (companyCreated == true)
                         return this.Ok("Company Created");

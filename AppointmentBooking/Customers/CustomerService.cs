@@ -50,7 +50,7 @@ public class CustomerService : ICustomerService
     public async Task<List<Customer>?> GetAllCustomersAsync() =>
         await _context.Customers.AsNoTracking().ToListAsync();
 
-    public async Task<bool> CreateCustomerAsync(CreateCustomerRequest request)
+    public bool CreateCustomer(CreateCustomerRequest request)
     {
         ArgumentNullException.ThrowIfNull(request);
         ArgumentException.ThrowIfNullOrEmpty(request.Name);

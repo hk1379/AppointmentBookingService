@@ -71,13 +71,13 @@
         // working
         [HttpPost]
         [Route("create")]
-        public async Task<IActionResult> CreateMeetingAsync([FromBody] CreateMeetingRequest request)
+        public IActionResult CreateMeetingAsync([FromBody] CreateMeetingRequest request)
         {
             try
             {
                 if (request != null)
                 {
-                    bool meetingCreated = await _meetingService.CreateMeetingAsync(request);
+                    bool meetingCreated = _meetingService.CreateMeeting(request);
 
                     if (meetingCreated == true)
                         return this.Ok("Meeting Created");
@@ -128,7 +128,7 @@
             {
                 if (request != null)
                 {
-                    bool customerAdded = await _meetingService.AddCustomersToMeeting(request).ConfigureAwait(false);
+                    bool customerAdded = await _meetingService.AddCustomersToMeetingAsync(request).ConfigureAwait(false);
 
                     if (customerAdded == true)
                         return this.Ok("Customers Added");
@@ -153,7 +153,7 @@
             {
                 if (request != null)
                 {
-                    bool companyAdded = await _meetingService.AddCompaniesToMeeting(request).ConfigureAwait(false);
+                    bool companyAdded = await _meetingService.AddCompaniesToMeetingAsync(request).ConfigureAwait(false);
 
                     if (companyAdded == true)
                         return this.Ok("Companies Added");
@@ -178,7 +178,7 @@
             {
                 if (request != null)
                 {
-                    bool customersRemoved = await _meetingService.RemoveCustomersFromMeeting(request).ConfigureAwait(false);
+                    bool customersRemoved = await _meetingService.RemoveCustomersFromMeetingAsync(request).ConfigureAwait(false);
 
                     if (customersRemoved == true)
                         return this.Ok("Customers Removed");
@@ -203,7 +203,7 @@
             {
                 if (request != null)
                 {
-                    bool companiesRemoved = await _meetingService.RemoveCompaniesFromMeeting(request).ConfigureAwait(false);
+                    bool companiesRemoved = await _meetingService.RemoveCompaniesFromMeetingAsync(request).ConfigureAwait(false);
 
                     if (companiesRemoved == true)
                         return this.Ok("Companies Removed");
