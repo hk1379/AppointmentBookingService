@@ -1,6 +1,6 @@
 ﻿using AppointmentBooking.Context.Models;
 
-namespace AppointmentBooking.Customers.DTO
+namespace AppointmentBooking.Customers.Responses
 {
     public class MeetingResponse
     {

@@ -1,13 +1,14 @@
 ﻿using AppointmentBooking.Context.Models;
-using AppointmentBooking.Customers.DTO;
+using AppointmentBooking.Customers.Requests;
+using AppointmentBooking.Customers.Responses;
 
 namespace AppointmentBooking.Customers
 {
     public interface ICustomerService
     {
-        record CreateCustomerRequest(string Name, string PhoneNumber, string EmailAddress, string? CompanyName);
+        // record CreateCustomerRequest(string Name, string PhoneNumber, string EmailAddress, string? CompanyName);
 
-        record UpdateCustomerRequest(int Id, string Name, string PhoneNumber, string EmailAddress, string? CompanyName, int[] MeetingIds);
+        //record UpdateCustomerRequest(int Id, string? Name, string? PhoneNumber, string? EmailAddress, string? CompanyName, int[] MeetingIds);
 
         Task<Customer?> GetCustomerAsync(int id);
 

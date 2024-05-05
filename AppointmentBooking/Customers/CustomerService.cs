@@ -2,7 +2,8 @@
 
 using AppointmentBooking.Context;
 using AppointmentBooking.Context.Models;
-using AppointmentBooking.Customers.DTO;
+using AppointmentBooking.Customers.Requests;
+using AppointmentBooking.Customers.Responses;
 using Microsoft.EntityFrameworkCore;
 using static AppointmentBooking.Customers.ICustomerService;
 
@@ -52,30 +53,21 @@ public class CustomerService : ICustomerService
 
     public async Task<bool> CreateCustomerAsync(CreateCustomerRequest request)
     {
-        int entriesSaved;
+        ArgumentNullException.ThrowIfNull(request);
+        ArgumentException.ThrowIfNullOrEmpty(request.Name);
+        ArgumentException.ThrowIfNullOrEmpty(request.PhoneNumber);
+        ArgumentException.ThrowIfNullOrEmpty(request.EmailAddress);
 
-        if (request != null)
+        Customer customer = new()
         {
-            Customer customer = new()
-            {
-                Name = request.Name,
-                EmailAddress = request.EmailAddress,
-                PhoneNumber = request.PhoneNumber,
-                CompanyName = request.CompanyName,
-            };
+            Name = request.Name,
+            EmailAddress = request.EmailAddress,
+            PhoneNumber = request.PhoneNumber,
+            CompanyName = request.CompanyName,
+        };
 
-            _context.Customers.Add(customer);
-            entriesSaved = await _context.SaveChangesAsync().ConfigureAwait(false);
-        }
-        else
-        {
-            _logger.LogError("One of the following are null, Name: {name}, Email Address: {email} or Phone Number: {phoneNumber}",
-                             request?.Name,
-                             request?.EmailAddress,
-                             request?.PhoneNumber);
-
-            throw new ArgumentNullException(nameof(request));
-        }
+        _context.Customers.Add(customer);
+        int entriesSaved = await _context.SaveChangesAsync().ConfigureAwait(false);
 
         bool isCustomerSaved = entriesSaved >= 1;
         return isCustomerSaved;
@@ -83,15 +75,17 @@ public class CustomerService : ICustomerService
 
     public async Task<bool> UpdateCustomerAsync(UpdateCustomerRequest request)
     {
+        ArgumentNullException.ThrowIfNull(request);
+
         Customer? customer = await this.GetCustomerTrackingAsync(request.Id).ConfigureAwait(false);
 
         if (customer != null)
         {
             customer.Id = request.Id;
-            customer.Name = request.Name;
-            customer.PhoneNumber = request.PhoneNumber;
-            customer.EmailAddress = request.EmailAddress;
-            customer.CompanyName = request.CompanyName;
+            customer.Name = request?.Name != null ? request.Name : customer.Name;
+            customer.PhoneNumber = request?.PhoneNumber != null ? request.PhoneNumber : customer.PhoneNumber;
+            customer.EmailAddress = request?.EmailAddress != null ? request.EmailAddress : customer.EmailAddress;
+            customer.CompanyName = request?.CompanyName != null ? request.CompanyName : customer.CompanyName;
         }
 
         int entriesSaved = await _context.SaveChangesAsync().ConfigureAwait(false);
