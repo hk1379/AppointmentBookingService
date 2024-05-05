@@ -20,7 +20,7 @@ namespace AppointmentBooking.Customers
 
         Task<List<Customer>?> GetAllCustomersAsync();
 
-        Task<bool> CreateCustomerAsync(CreateCustomerRequest request);
+        bool CreateCustomer(CreateCustomerRequest request);
 
         Task<bool> UpdateCustomerAsync(UpdateCustomerRequest request);
 

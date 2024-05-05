@@ -5,17 +5,17 @@ using AppointmentBooking.Customers.Requests;
 using AutoFixture;
 using AutoFixture.Xunit2;
 
-public class CreateCustomerAsyncTests : BaseTest
+public class CreateCustomerTests : BaseTest
 {
     private readonly ICustomerService _customerService;
 
-    public CreateCustomerAsyncTests()
+    public CreateCustomerTests()
     {
         _customerService = fixture.Create<CustomerService>();
     }
 
     [Theory, AutoData]
-    public async Task CreateCustomerAsync_ValidCustomerRequestPassedIn_ReturnsTrue(string name, string phoneNumber, string emailAddress, string? companyName)
+    public void CreateCustomer_ValidCustomerRequestPassedIn_ReturnsTrue(string name, string phoneNumber, string emailAddress, string? companyName)
     {
         // arrange
         CreateCustomerRequest createCustomerRequest = fixture
@@ -27,16 +27,14 @@ public class CreateCustomerAsyncTests : BaseTest
             .Create();
 
         // act
-        bool customerCreated = await _customerService
-            .CreateCustomerAsync(createCustomerRequest)
-            .ConfigureAwait(false);
+        bool customerCreated = _customerService.CreateCustomer(createCustomerRequest);
 
         // assert
         Assert.True(customerCreated);
     }
 
     //[Theory, AutoData]
-    //public async Task CreateCustomerAsync_DbSaveFails_ReturnsFalse(string name, string phoneNumber, string emailAddress, string? companyName)
+    //public async Task CreateCustomer_DbSaveFails_ReturnsFalse(string name, string phoneNumber, string emailAddress, string? companyName)
     //{
     //    // arrange
     //    CreateCustomerRequest createCustomerRequest = fixture
@@ -64,7 +62,7 @@ public class CreateCustomerAsyncTests : BaseTest
     [InlineAutoData("")]
     [InlineAutoData("testName", "")]
     [InlineAutoData("testName", "testPhoneNumber", "")]
-    public async Task CreateCustomerAsync_InvalidCustomerRequestPassedIn_ReturnsArgumentException(string name, string phoneNumber, string emailAddress, string? companyName)
+    public void CreateCustomer_InvalidCustomerRequestPassedIn_ReturnsArgumentException(string name, string phoneNumber, string emailAddress, string? companyName)
     {
         // arrange
         CreateCustomerRequest createCustomerRequest = fixture
@@ -76,14 +74,14 @@ public class CreateCustomerAsyncTests : BaseTest
             .Create();
 
         // act and assert
-        await Assert.ThrowsAsync<ArgumentException>(() => _customerService.CreateCustomerAsync(createCustomerRequest));
+        Assert.Throws<ArgumentException>(() => _customerService.CreateCustomer(createCustomerRequest));
     }
 
     [Theory]
     [InlineAutoData(null)]
     [InlineAutoData("testName", null)]
     [InlineAutoData("testName", "testPhoneNumber", null)]
-    public async Task CreateCustomerAsync_InvalidCustomerRequestPassedIn_ReturnsArgumentNullException(string name, string phoneNumber, string emailAddress, string? companyName)
+    public void CreateCustomer_InvalidCustomerRequestPassedIn_ReturnsArgumentNullException(string name, string phoneNumber, string emailAddress, string? companyName)
     {
         // arrange
         CreateCustomerRequest createCustomerRequest = fixture
@@ -95,13 +93,13 @@ public class CreateCustomerAsyncTests : BaseTest
             .Create();
 
         // act and assert
-        await Assert.ThrowsAsync<ArgumentNullException>(() => _customerService.CreateCustomerAsync(createCustomerRequest));
+        Assert.Throws<ArgumentNullException>(() => _customerService.CreateCustomer(createCustomerRequest));
     }
 
     [Fact]
-    public async Task CreateCustomerAsync_NullCreateCustomerRequestPassedIn_ReturnsArgumentNullException()
+    public void CreateCustomer_NullCreateCustomerRequestPassedIn_ReturnsArgumentNullException()
     {
         // act and assert
-        await Assert.ThrowsAsync<ArgumentNullException>(() => _customerService.CreateCustomerAsync(null));
+        Assert.Throws<ArgumentNullException>(() => _customerService.CreateCustomer(null));
     }
 }

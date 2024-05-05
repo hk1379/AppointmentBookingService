@@ -76,13 +76,13 @@
         // working
         [HttpPost]
         [Route("create")]
-        public async Task<IActionResult> CreateCustomerAsync([FromBody] CreateCustomerRequest request)
+        public IActionResult CreateCustomer([FromBody] CreateCustomerRequest request)
         {
             try
             {
                 if (request != null)
                 {
-                    bool customerCreated = await _customerService.CreateCustomerAsync(request).ConfigureAwait(false);
+                    bool customerCreated = _customerService.CreateCustomer(request);
 
                     if (customerCreated == true)
                         return this.Ok("Customer Created");

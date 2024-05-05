@@ -49,31 +49,22 @@ namespace AppointmentBooking.Companies
         public async Task<List<Company>?> GetAllCompaniesAsync() =>
             await _context.Company.AsNoTracking().ToListAsync();
 
-        public async Task<bool> CreateCompanyAsync(CreateCompanyRequest request)
+        public bool CreateCompany(CreateCompanyRequest request)
         {
-            int entriesSaved;
+            ArgumentNullException.ThrowIfNull(request);
+            ArgumentException.ThrowIfNullOrEmpty(request.Name);
+            ArgumentException.ThrowIfNullOrEmpty(request.PhoneNumber);
+            ArgumentException.ThrowIfNullOrEmpty(request.EmailAddress);
 
-            if (request != null)
+            Company company = new()
             {
-                Company company = new()
-                {
-                    Name = request.Name,
-                    EmailAddress = request.EmailAddress,
-                    PhoneNumber = request.PhoneNumber,
-                };
+                Name = request.Name,
+                EmailAddress = request.EmailAddress,
+                PhoneNumber = request.PhoneNumber,
+            };
 
-                _context.Company.Add(company);
-                entriesSaved = await _context.SaveChangesAsync().ConfigureAwait(false);
-            }
-            else
-            {
-                _logger.LogError("One of the following are null, Name: {name}, Email Address: {email} or Phone Number: {phoneNumber}",
-                                 request?.Name,
-                                 request?.EmailAddress,
-                                 request?.PhoneNumber);
-
-                throw new ArgumentNullException(nameof(request));
-            }
+            _context.Company.Add(company);
+            int entriesSaved = _context.SaveChanges();
 
             bool isCompanySaved = entriesSaved == 1;
             return isCompanySaved;
@@ -81,6 +72,8 @@ namespace AppointmentBooking.Companies
 
         public async Task<bool> UpdateCompanyAsync(UpdateCompanyRequest request)
         {
+            ArgumentNullException.ThrowIfNull(request);
+
             Company? company = await this.GetCompanyTrackingAsync(request.Id).ConfigureAwait(false);
 
             if (company != null)
@@ -91,18 +84,18 @@ namespace AppointmentBooking.Companies
                 company.EmailAddress = request.EmailAddress;
             }
 
-            int entriesSaved = await _context.SaveChangesAsync().ConfigureAwait(false);
+            int entriesSaved = _context.SaveChanges();
             return entriesSaved >= 1;
         }
 
         public async Task<bool> DeleteCompanyAsync(int Id)
         {
-            Company? company = await this.GetCompanyAsync(Id).ConfigureAwait(false);
+            Company? company = await this.GetCompanyTrackingAsync(Id).ConfigureAwait(false);
 
             if (company != null)
             {
                 _context.Remove(company);
-                int entriesSaved = await _context.SaveChangesAsync().ConfigureAwait(false);
+                int entriesSaved = _context.SaveChanges();
 
                 return entriesSaved >= 1;
             }

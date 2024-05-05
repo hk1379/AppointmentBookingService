@@ -17,17 +17,17 @@
 
         Task<List<Meeting>?> GetAllMeetingsAsync();
 
-        Task<bool> CreateMeetingAsync(CreateMeetingRequest request);
+        bool CreateMeeting(CreateMeetingRequest request);
 
         Task<bool> UpdateMeetingAsync(UpdateMeetingRequest request);
 
-        Task<bool> AddCustomersToMeeting(CustomersToMeetingRequest request);
+        Task<bool> AddCustomersToMeetingAsync(CustomersToMeetingRequest request);
 
-        Task<bool> AddCompaniesToMeeting(CompaniesToMeetingRequest request);
+        Task<bool> AddCompaniesToMeetingAsync(CompaniesToMeetingRequest request);
 
-        Task<bool> RemoveCustomersFromMeeting(CustomersToMeetingRequest request);
+        Task<bool> RemoveCustomersFromMeetingAsync(CustomersToMeetingRequest request);
 
-        Task<bool> RemoveCompaniesFromMeeting(CompaniesToMeetingRequest request);
+        Task<bool> RemoveCompaniesFromMeetingAsync(CompaniesToMeetingRequest request);
 
         Task<bool> DeleteMeetingAsync(int Id);
     }
